@@ -29,7 +29,7 @@ export function Header() {
               className="h-8 w-8"
             ></Image>
             <span className="font-bold text-xl hidden sm:inline-block">
-              VideoStream
+              Video Product Analysis
             </span>
           </div>
           <div className="flex items-center space-x-4">

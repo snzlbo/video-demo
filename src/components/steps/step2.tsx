@@ -1,109 +1,180 @@
+"use client"
+import WordCloud from "react-d3-cloud"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Star, ThumbsUp, MessageSquare } from "lucide-react"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
 
-export function Step2() {
-  const reviews = [
-    {
-      id: 1,
-      author: "Sarah Johnson",
-      rating: 5,
-      date: "2024-01-15",
-      title: "Great product!",
-      content:
-        "I've been using this product for 3 months and I can see a significant improvement in my skin. The absorption is excellent and it doesn't leave any greasy residue. Highly recommend!",
-      helpful: 12,
-      verified: true,
-    },
-    {
-      id: 2,
-      author: "Mike Chen",
-      rating: 4,
-      date: "2024-01-10",
-      title: "Good value for money",
-      content:
-        "The product works well for dry skin. I noticed improvements after 2 weeks of use. The only downside is the packaging could be better, but the product itself is great.",
-      helpful: 8,
-      verified: true,
-    },
-    {
-      id: 3,
-      author: "Emma Wilson",
-      rating: 5,
-      date: "2024-01-08",
-      title: "Amazing Product!",
-      content:
-        "This has become my go-to skincare product. The natural ingredients make it perfect for sensitive skin, and the results are visible within days. Will definitely repurchase!",
-      helpful: 15,
-      verified: true,
-    },
+interface Step2Props {
+  selectedWord: string | null
+  onSelect: (word: string) => void
+}
+
+interface WordData {
+  text: string
+  value: number
+}
+
+export function Step2({ selectedWord, onSelect }: Step2Props) {
+  const words: WordData[] = [
+    { text: "innovation", value: 64 },
+    { text: "technology", value: 58 },
+    { text: "quality", value: 52 },
+    { text: "customer", value: 48 },
+    { text: "service", value: 44 },
+    { text: "design", value: 40 },
+    { text: "performance", value: 36 },
+    { text: "reliability", value: 32 },
+    { text: "experience", value: 28 },
+    { text: "support", value: 24 },
+    { text: "features", value: 20 },
+    { text: "interface", value: 18 },
+    { text: "security", value: 16 },
+    { text: "efficiency", value: 14 },
+    { text: "satisfaction", value: 12 },
   ]
+
+  const colors = [
+    "#1f77b4",
+    "#ff7f0e",
+    "#2ca02c",
+    "#d62728",
+    "#9467bd",
+    "#8c564b",
+    "#e377c2",
+    "#7f7f7f",
+    "#bcbd22",
+    "#17becf",
+  ]
+
+  const fontSize = (word: WordData) => Math.log2(word.value) * 8
+  const rotate = () => (Math.random() - 0.5) * 60
+
+  const onWordClick = (event: any, word: WordData) => {
+    onSelect(word.text)
+  }
+
+  const fill = (word: WordData, i: number) => {
+    const isSelected = selectedWord === word.text
+    return isSelected ? "#22c55e" : colors[i % colors.length]
+  }
 
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h2 className="text-3xl font-bold mb-2">Top Review Comments</h2>
-        <p className="text-muted-foreground">Customer feedback and ratings analysis</p>
+        <h2 className="text-3xl font-bold mb-2">Word Cloud Analysis</h2>
+        <p className="text-muted-foreground">Click on a word to select it for analysis</p>
       </div>
 
-      <div className="grid gap-4">
-        {reviews.map((review) => (
-          <Card key={review.id} className="hover:shadow-md transition-shadow">
-            <CardHeader className="pb-3">
-              <div className="flex items-start justify-between">
-                <div className="flex items-center space-x-3">
-                  <Avatar className="w-10 h-10">
-                    <AvatarImage src={`/placeholder.svg?height=40&width=40`} />
-                    <AvatarFallback>
-                      {review.author
-                        .split(" ")
-                        .map((n) => n[0])
-                        .join("")}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <div className="flex items-center space-x-2">
-                      <span className="font-medium">{review.author}</span>
-                      {review.verified && (
-                        <Badge variant="secondary" className="text-xs">
-                          Verified
-                        </Badge>
-                      )}
-                    </div>
-                    <div className="flex items-center space-x-2 mt-1">
-                      <div className="flex">
-                        {Array.from({ length: 5 }, (_, i) => (
-                          <Star
-                            key={i}
-                            className={`w-4 h-4 ${
-                              i < review.rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
-                            }`}
-                          />
-                        ))}
-                      </div>
-                      <span className="text-sm text-muted-foreground">{review.date}</span>
-                    </div>
-                  </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Key Terms & Concepts</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="h-96 w-full flex items-center justify-center bg-gray-50 dark:bg-gray-900 rounded-lg">
+            <WordCloud
+              data={words}
+              width={800}
+              height={400}
+              font="Impact"
+              fontStyle="normal"
+              fontWeight="normal"
+              fontSize={fontSize}
+              spiral="archimedean"
+              rotate={rotate}
+              padding={5}
+              random={Math.random}
+              fill={fill}
+              onWordClick={onWordClick}
+            />
+          </div>
+        </CardContent>
+      </Card>
+
+      {selectedWord && (
+        <div className="text-center p-4 bg-blue-50 dark:bg-blue-950 rounded-lg border border-blue-200 dark:border-blue-800">
+          <p className="text-blue-800 dark:text-blue-200">
+            ✓ Selected word: <strong>"{selectedWord}"</strong> for detailed analysis
+          </p>
+        </div>
+      )}
+
+      <div className="grid md:grid-cols-3 gap-4">
+        <Card className="p-4">
+          <div className="text-center">
+            <div className="text-2xl font-bold text-primary">15</div>
+            <div className="text-sm text-muted-foreground">Total Keywords</div>
+          </div>
+        </Card>
+        <Card className="p-4">
+          <div className="text-center">
+            <div className="text-2xl font-bold text-green-600">64</div>
+            <div className="text-sm text-muted-foreground">Highest Frequency</div>
+          </div>
+        </Card>
+        <Card className="p-4">
+          <div className="text-center">
+            <div className="text-2xl font-bold text-orange-600">12</div>
+            <div className="text-sm text-muted-foreground">Lowest Frequency</div>
+          </div>
+        </Card>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-4">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Word Analysis</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {selectedWord ? (
+              <div className="space-y-3">
+                <div className="flex justify-between">
+                  <span className="font-medium">Selected Word:</span>
+                  <span className="text-green-600 font-semibold">{selectedWord}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="font-medium">Frequency:</span>
+                  <span>{words.find((w) => w.text === selectedWord)?.value || 0}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="font-medium">Rank:</span>
+                  <span>#{words.findIndex((w) => w.text === selectedWord) + 1}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="font-medium">Category:</span>
+                  <span className="text-blue-600">Business</span>
                 </div>
               </div>
-              <CardTitle className="text-lg">{review.title}</CardTitle>
-            </CardHeader>
-            <CardContent className="pt-0">
-              <p className="text-muted-foreground mb-3">{review.content}</p>
-              <div className="flex items-center space-x-4 text-sm">
-                <button className="flex items-center space-x-1 text-muted-foreground hover:text-foreground transition-colors">
-                  <ThumbsUp className="w-4 h-4" />
-                  <span>Helpful ({review.helpful})</span>
-                </button>
-                <button className="flex items-center space-x-1 text-muted-foreground hover:text-foreground transition-colors">
-                  <MessageSquare className="w-4 h-4" />
-                  <span>Reply</span>
-                </button>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+            ) : (
+              <p className="text-muted-foreground text-center py-4">
+                Click on a word in the cloud to see detailed analysis
+              </p>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Top Words</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              {words.slice(0, 5).map((word, index) => (
+                <div
+                  key={word.text}
+                  className={`flex justify-between items-center p-2 rounded cursor-pointer transition-colors ${
+                    selectedWord === word.text
+                      ? "bg-green-100 dark:bg-green-900"
+                      : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                  }`}
+                  onClick={() => onSelect(word.text)}
+                >
+                  <span className="font-medium">
+                    #{index + 1} {word.text}
+                  </span>
+                  <span className="text-sm text-muted-foreground">{word.value}</span>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   )

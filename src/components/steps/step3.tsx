@@ -1,105 +1,135 @@
+"use client"
 
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Play, Clock, User } from "lucide-react"
+import { cn } from "@/lib/utils"
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Progress } from "@/components/ui/progress"
-import { Button } from "@/components/ui/button"
-import { BarChart3, Download, Share2 } from "lucide-react"
+interface Step3Props {
+  selectedVideo: string | null
+  onSelect: (videoId: string) => void
+}
 
-export function Step3() {
-  const analysisData = [
-    { category: "ポジティブ評価", value: 85, color: "bg-green-500" },
-    { category: "コスパ満足度", value: 78, color: "bg-blue-500" },
-    { category: "効果実感", value: 92, color: "bg-purple-500" },
-    { category: "リピート意向", value: 88, color: "bg-orange-500" },
-    { category: "推奨度", value: 90, color: "bg-pink-500" },
-    { category: "パッケージ評価", value: 72, color: "bg-cyan-500" },
-    { category: "ブランド信頼度", value: 86, color: "bg-indigo-500" },
-    { category: "総合満足度", value: 89, color: "bg-emerald-500" },
+export function Step3({ selectedVideo, onSelect }: Step3Props) {
+  const videoReviews = [
+    {
+      id: "video1",
+      title: "Product Deep Dive Review",
+      author: "Tech Reviewer Pro",
+      duration: "8:45",
+      thumbnail: "/placeholder.svg?height=200&width=300",
+      views: "125K",
+      rating: 4.8,
+      description: "Comprehensive analysis of features, performance, and user experience.",
+    },
+    {
+      id: "video2",
+      title: "Real User Experience",
+      author: "Sarah Johnson",
+      duration: "5:32",
+      thumbnail: "/placeholder.svg?height=200&width=300",
+      views: "89K",
+      rating: 4.6,
+      description: "Honest review after 3 months of daily usage and testing.",
+    },
+    {
+      id: "video3",
+      title: "Comparison & Benchmarks",
+      author: "Tech Analysis Hub",
+      duration: "12:18",
+      thumbnail: "/placeholder.svg?height=200&width=300",
+      views: "203K",
+      rating: 4.9,
+      description: "Side-by-side comparison with competitors and performance tests.",
+    },
+    {
+      id: "video4",
+      title: "Unboxing & First Impressions",
+      author: "Unbox Everything",
+      duration: "6:21",
+      thumbnail: "/placeholder.svg?height=200&width=300",
+      views: "156K",
+      rating: 4.5,
+      description: "First look at packaging, build quality, and initial setup process.",
+    },
   ]
 
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h2 className="text-3xl font-bold mb-2">Analysis Results</h2>
-        <p className="text-muted-foreground">Comprehensive product analysis and insights</p>
+        <h2 className="text-3xl font-bold mb-2">Video Reviews</h2>
+        <p className="text-muted-foreground">Select a video review to analyze</p>
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <BarChart3 className="w-5 h-5" />
-              Performance Metrics
-            </CardTitle>
-            <CardDescription>Detailed breakdown of customer satisfaction metrics</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {analysisData.map((item, index) => (
-              <div key={index} className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium">{item.category}</span>
-                  <span className="text-sm text-muted-foreground">{item.value}%</span>
+        {videoReviews.map((video) => (
+          <Card
+            key={video.id}
+            className={cn(
+              "cursor-pointer transition-all duration-200 hover:shadow-lg",
+              selectedVideo === video.id ? "ring-2 ring-primary bg-primary/5" : "hover:bg-muted/50",
+            )}
+            onClick={() => onSelect(video.id)}
+          >
+            <CardHeader className="pb-3">
+              <div className="relative">
+                <img
+                  src={video.thumbnail || "/placeholder.svg"}
+                  alt={video.title}
+                  className="w-full h-48 object-cover rounded-lg"
+                />
+                <div className="absolute inset-0 bg-black/20 rounded-lg flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                  <Play className="w-12 h-12 text-white" />
                 </div>
-                <Progress value={item.value} className="h-2" />
+                <Badge className="absolute bottom-2 right-2 bg-black/80 text-white">
+                  <Clock className="w-3 h-3 mr-1" />
+                  {video.duration}
+                </Badge>
               </div>
-            ))}
-          </CardContent>
-        </Card>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div>
+                <CardTitle className="text-lg line-clamp-2">{video.title}</CardTitle>
+                <div className="flex items-center gap-2 mt-2">
+                  <User className="w-4 h-4 text-muted-foreground" />
+                  <span className="text-sm text-muted-foreground">{video.author}</span>
+                </div>
+              </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Key Insights</CardTitle>
-            <CardDescription>Summary of analysis findings</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="p-4 bg-green-50 dark:bg-green-950 rounded-lg border border-green-200 dark:border-green-800">
-              <h4 className="font-semibold text-green-800 dark:text-green-200 mb-2">Excellent Performance</h4>
-              <p className="text-sm text-green-700 dark:text-green-300">
-                The product shows outstanding results with 92% effectiveness rating and 90% recommendation score.
-              </p>
-            </div>
+              <p className="text-sm text-muted-foreground line-clamp-2">{video.description}</p>
 
-            <div className="p-4 bg-blue-50 dark:bg-blue-950 rounded-lg border border-blue-200 dark:border-blue-800">
-              <h4 className="font-semibold text-blue-800 dark:text-blue-200 mb-2">Strong Customer Loyalty</h4>
-              <p className="text-sm text-blue-700 dark:text-blue-300">
-                88% of customers express intent to repurchase, indicating high satisfaction levels.
-              </p>
-            </div>
-
-            <div className="p-4 bg-orange-50 dark:bg-orange-950 rounded-lg border border-orange-200 dark:border-orange-800">
-              <h4 className="font-semibold text-orange-800 dark:text-orange-200 mb-2">Improvement Opportunity</h4>
-              <p className="text-sm text-orange-700 dark:text-orange-300">
-                Packaging design could be enhanced (72% satisfaction) to match product quality.
-              </p>
-            </div>
-
-            <div className="flex gap-2 pt-4">
-              <Button className="flex-1" size="sm">
-                <Download className="w-4 h-4 mr-2" />
-                Export Report
-              </Button>
-              <Button variant="outline" size="sm">
-                <Share2 className="w-4 h-4 mr-2" />
-                Share
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <span className="text-sm font-medium">{video.views} views</span>
+                  <div className="flex items-center gap-1">
+                    <span className="text-sm">⭐</span>
+                    <span className="text-sm font-medium">{video.rating}</span>
+                  </div>
+                </div>
+                {selectedVideo === video.id && (
+                  <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                    <svg className="w-4 h-4 text-primary-foreground" fill="currentColor" viewBox="0 0 20 20">
+                      <path
+                        fillRule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        ))}
       </div>
 
-      <Card className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950 dark:to-purple-950 border-blue-200 dark:border-blue-800">
-        <CardContent className="pt-6">
-          <div className="text-center">
-            <h3 className="text-2xl font-bold mb-2">ネガポン分析</h3>
-            <p className="text-muted-foreground mb-4">
-              Complete analysis finished! Your product shows excellent market performance.
-            </p>
-            <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
-              View Detailed Report
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+      {selectedVideo && (
+        <div className="text-center p-4 bg-purple-50 dark:bg-purple-950 rounded-lg border border-purple-200 dark:border-purple-800">
+          <p className="text-purple-800 dark:text-purple-200">
+            ✓ Selected: <strong>{videoReviews.find((v) => v.id === selectedVideo)?.title}</strong> for analysis
+          </p>
+        </div>
+      )}
     </div>
   )
 }
