@@ -47,7 +47,7 @@ export function Step1({ selectedCompany, onSelect }: Step1Props) {
             key={company.id}
             className={cn(
               "relative cursor-pointer overflow-auto transition-all duration-300 hover:shadow-xl group p-0",
-              selectedCompany === company.id ? "ring-2 ring-blue-500 shadow-lg shadow-blue-500/25" : "hover:shadow-lg",
+              selectedCompany === company.id ? "ring-2 ring-primary shadow-lg shadow-primary/25" : "hover:shadow-lg",
             )}
             onClick={() => onSelect(company.id)}
           >
@@ -74,7 +74,7 @@ export function Step1({ selectedCompany, onSelect }: Step1Props) {
                 <h3 className="text-lg font-semibold text-center text-gray-900 dark:text-white">{company.name}</h3>
               </div>
               {selectedCompany === company.id && (
-                <div className="z-100 absolute top-2 right-2 size-8 bg-blue-500 rounded-full p-2 flex items-center justify-center text-white">
+                <div className="z-100 absolute top-2 right-2 size-8 bg-primary rounded-full p-2 flex items-center justify-center text-white">
                   <Check />
                 </div>
               )}

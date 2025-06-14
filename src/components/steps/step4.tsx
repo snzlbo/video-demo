@@ -54,7 +54,7 @@ export function Step4() {
         axisPointer: {
           type: "shadow",
         },
-        formatter: (params: any) => {
+        formatter: (params: { name: string; value: number }[]) => {
           const value = params[0].value
           const name = params[0].name
           return `${name}: ${value > 0 ? "+" : ""}${value}%`
@@ -138,7 +138,7 @@ export function Step4() {
         },
       ],
       animationDuration: 2000,
-      animationEasing: "cubicOut",
+      easing: "cubicOut",
     }
 
     chart.setOption(option)
@@ -160,7 +160,6 @@ export function Step4() {
   const negativeCount = 5
   const averageScore = 65.8
   const highestScore = 95
-  const lowestScore = -22
 
   const summaryMetrics = [
     { label: "Positive Metrics", value: positiveCount, change: "74%", color: "text-blue-600" },
