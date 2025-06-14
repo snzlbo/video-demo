@@ -23,7 +23,7 @@ export default function Home() {
   const nextStep = async () => {
     if (currentStep < totalSteps) {
       setIsLoading(true)
-      await new Promise((resolve) => setTimeout(resolve, 1500))
+      await new Promise((resolve) => setTimeout(resolve, 1))
       setCurrentStep(currentStep + 1)
       setIsLoading(false)
     }
@@ -87,6 +87,7 @@ export default function Home() {
 
             <Button
               onClick={nextStep}
+              disabled={isNextDisabled() || isLoading}
               className="flex items-center gap-2"
             >
              {isLoading ? <Loader2 className="w-12 h-12 animate-spin mx-auto " /> : null}

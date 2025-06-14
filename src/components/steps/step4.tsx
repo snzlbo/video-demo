@@ -1,111 +1,144 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useMemo, useRef } from "react"
 import * as echarts from "echarts"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { useTheme } from "next-themes"
 
 export function Step4() {
+  const { theme } = useTheme()
+  const isDark = useMemo(() => theme === "dark", [theme])
   const chartRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (!chartRef.current) return
+    if (!chartRef.current || !theme) return
+    echarts.dispose(chartRef.current)
 
     const chart = echarts.init(chartRef.current)
 
+    // Data with some negative values
+    const data = [
+      { name: "肌への適合性・安全性​", value: 90 },
+      { name: "保湿力・潤い​", value: 80 },
+      { name: "香り", value: 75 },
+      { name: "成分・品質", value: 70 },
+      { name: "使用感・テクスチャー", value: 85 },
+      { name: "パッケージ・容器​", value: 60 },
+      { name: "価格・コストパフォーマンス​", value: 50 },
+      { name: "真正性・正規品​", value: 30 },
+      { name: "配送・サービス", value: 80 },
+      { name: "季節・気候への適合性​", value: 10 },
+      { name: "肌の色・トーンへの影響​", value: 0 },
+      { name: "他製品との比較​", value: -10 },
+      { name: "年齢適合性​", value: 60 },
+      { name: "衛生面・安全管理​", value: 60 },
+      { name: "ブランド・製品情報​", value: 5 },
+      { name: "購入の利便性​", value: 75 },
+      { name: "環境・倫理面​", value: -50 },
+      { name: "使用方法・利便性​", value: 75 },
+      { name: "ギフト・贈答用​", value: 20 },
+    ]
+
     const option = {
       title: {
-        text: "Performance Analysis",
+        text: "Comprehensive Performance Analysis",
         left: "center",
         textStyle: {
           color: "#333",
           fontSize: 18,
+          fontWeight: "bold",
         },
       },
       tooltip: {
         trigger: "axis",
         axisPointer: {
-          type: "cross",
+          type: "shadow",
+        },
+        formatter: (params: any) => {
+          const value = params[0].value
+          const name = params[0].name
+          return `${name}: ${value > 0 ? "+" : ""}${value}%`
         },
       },
-      legend: {
-        data: ["User Satisfaction", "Performance Score", "Market Share"],
-        bottom: 10,
-      },
       grid: {
-        left: "3%",
-        right: "4%",
-        bottom: "15%",
+        left: "20%",
+        right: "10%",
+        top: "15%",
+        bottom: "5%",
         containLabel: true,
       },
       xAxis: {
-        type: "category",
-        data: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-      },
-      yAxis: {
         type: "value",
         axisLabel: {
           formatter: "{value}%",
         },
+        splitLine: {
+          show: true,
+          lineStyle: {
+            color: isDark ? "#fafafa" : "#f0f0f0",
+            type: "dashed",
+          },
+        },
+        axisLine: {
+          show: true,
+          lineStyle: {
+            color: isDark ? "#fafafa" : "#666",
+          },
+        },
+      },
+      yAxis: {
+        type: "category",
+        data: data.map((item) => item.name),
+        axisLabel: {
+          fontSize: 11,
+          color: isDark ? "#fafafa" : "#666",
+          width: 120,
+          overflow: "truncate",
+        },
+        axisTick: {
+          show: false,
+        },
+        axisLine: {
+          show: false,
+          lineStyle: {
+          },
+        },
       },
       series: [
         {
-          name: "User Satisfaction",
-          type: "line",
-          data: [65, 68, 72, 75, 78, 82, 85, 88, 90, 92, 94, 96],
+          type: "bar",
+          data: data.map((item) => ({
+            value: item.value,
+            itemStyle: {
+              color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+                { offset: 0, color: "#166534" },
+                { offset: 0.5, color: "#15803d" },
+                { offset: 1, color: "#16a34a" },
+              ]),
+              borderRadius: item.value >= 0 ? [0, 4, 4, 0] : [4, 0, 0, 4],
+            },
+          })),
           itemStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+              { offset: 0, color: "#15803d" },
+              { offset: 0.5, color: "#16a34a" },
+              { offset: 1, color: "#22c55e" },
+            ]),
+            borderRadius: [0, 4, 4, 0],
+          },
+          label: {
+            show: true,
+            position: "right",
+            formatter: "{c}%",
             color: "#22c55e",
+            fontWeight: "bold",
+            fontSize: 12,
           },
-          lineStyle: {
-            color: "#22c55e",
-            width: 3,
-          },
-          areaStyle: {
-            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-              { offset: 0, color: "rgba(34, 197, 94, 0.3)" },
-              { offset: 1, color: "rgba(34, 197, 94, 0.1)" },
-            ]),
-          },
-          smooth: true,
-        },
-        {
-          name: "Performance Score",
-          type: "line",
-          data: [70, 72, 75, 78, 80, 83, 86, 89, 91, 93, 95, 97],
-          itemStyle: {
-            color: "#16a34a",
-          },
-          lineStyle: {
-            color: "#16a34a",
-            width: 3,
-          },
-          areaStyle: {
-            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-              { offset: 0, color: "rgba(22, 163, 74, 0.3)" },
-              { offset: 1, color: "rgba(22, 163, 74, 0.1)" },
-            ]),
-          },
-          smooth: true,
-        },
-        {
-          name: "Market Share",
-          type: "line",
-          data: [45, 48, 52, 55, 58, 62, 65, 68, 72, 75, 78, 82],
-          itemStyle: {
-            color: "#15803d",
-          },
-          lineStyle: {
-            color: "#15803d",
-            width: 3,
-          },
-          areaStyle: {
-            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-              { offset: 0, color: "rgba(21, 128, 61, 0.3)" },
-              { offset: 1, color: "rgba(21, 128, 61, 0.1)" },
-            ]),
-          },
-          smooth: true,
+          barWidth: "60%",
         },
       ],
+      animationDuration: 2000,
+      animationEasing: "cubicOut",
     }
 
     chart.setOption(option)
@@ -120,33 +153,40 @@ export function Step4() {
       window.removeEventListener("resize", handleResize)
       chart.dispose()
     }
-  }, [])
+  }, [isDark, theme])
 
-  const metrics = [
-    { label: "Overall Score", value: "94.5%", change: "+2.3%", color: "text-green-600" },
-    { label: "User Retention", value: "87.2%", change: "+5.1%", color: "text-green-600" },
-    { label: "Performance Index", value: "96.8%", change: "+1.8%", color: "text-green-600" },
-    { label: "Market Position", value: "#2", change: "+1", color: "text-green-600" },
+  // Calculate summary metrics
+  const positiveCount = 14
+  const negativeCount = 5
+  const averageScore = 65.8
+  const highestScore = 95
+  const lowestScore = -22
+
+  const summaryMetrics = [
+    { label: "Positive Metrics", value: positiveCount, change: "74%", color: "text-blue-600" },
+    { label: "Negative Metrics", value: negativeCount, change: "26%", color: "text-red-600" },
+    { label: "Average Score", value: `${averageScore}%`, change: "+3.2%", color: "text-purple-600" },
+    { label: "Best Performance", value: `${highestScore}%`, change: "Innovation", color: "text-green-600" },
   ]
 
   return (
     <div className="space-y-6">
       <div className="text-center">
         <h2 className="text-3xl font-bold mb-2">Analysis Results</h2>
-        <p className="text-muted-foreground">Comprehensive performance metrics and trends</p>
+        <p className="text-white">Comprehensive performance metrics across 19 key indicators</p>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Performance Trends</CardTitle>
+          <CardTitle>Performance Metrics Overview</CardTitle>
         </CardHeader>
         <CardContent>
-          <div ref={chartRef} className="w-full h-96" />
+          <div ref={chartRef} className="w-full h-[600px]" />
         </CardContent>
       </Card>
 
       <div className="grid md:grid-cols-4 gap-4">
-        {metrics.map((metric, index) => (
+        {summaryMetrics.map((metric, index) => (
           <Card key={index}>
             <CardContent className="p-6 text-center">
               <div className="text-2xl font-bold mb-2">{metric.value}</div>
@@ -156,27 +196,6 @@ export function Step4() {
           </Card>
         ))}
       </div>
-      {/* 
-      <Card className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 border-green-200 dark:border-green-800">
-        <CardContent className="p-6">
-          <div className="text-center">
-            <h3 className="text-2xl font-bold text-green-800 dark:text-green-200 mb-2">Analysis Complete! 🎉</h3>
-            <p className="text-green-700 dark:text-green-300 mb-4">
-              Your comprehensive analysis shows excellent performance across all metrics with consistent upward trends.
-            </p>
-            <div className="flex justify-center gap-4">
-              <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm">
-                <div className="text-lg font-bold text-green-600">96.8%</div>
-                <div className="text-sm text-muted-foreground">Final Score</div>
-              </div>
-              <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm">
-                <div className="text-lg font-bold text-green-600">+12.5%</div>
-                <div className="text-sm text-muted-foreground">Growth</div>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card> */}
     </div>
   )
 }
