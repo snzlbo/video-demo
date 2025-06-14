@@ -156,7 +156,7 @@ export function Step4() {
           </Card>
         ))}
       </div>
-
+      {/* 
       <Card className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 border-green-200 dark:border-green-800">
         <CardContent className="p-6">
           <div className="text-center">
@@ -176,7 +176,7 @@ export function Step4() {
             </div>
           </div>
         </CardContent>
-      </Card>
+      </Card> */}
     </div>
   )
 }

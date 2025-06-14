@@ -2,6 +2,8 @@
 
 import { Card, CardContent } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
+import { Check } from "lucide-react"
+import Image from "next/image"
 
 interface Step1Props {
   selectedCompany: string | null
@@ -11,28 +13,24 @@ interface Step1Props {
 export function Step1({ selectedCompany, onSelect }: Step1Props) {
   const companies = [
     {
-      id: "apple",
-      name: "Apple",
-      logo: "🍎",
-      description: "Technology Innovation",
+      id: "1",
+      name: "Chicco",
+      image: "/companies/company1.png",
     },
     {
-      id: "google",
-      name: "Google",
-      logo: "🔍",
-      description: "Search & AI Solutions",
+      id: "2",
+      name: "Sebamed",
+      image: "/companies/company2.png",
     },
     {
-      id: "microsoft",
-      name: "Microsoft",
-      logo: "🪟",
-      description: "Cloud & Productivity",
+      id: "3",
+      name: "Cetaphil",
+      image: "/companies/company3.png",
     },
     {
-      id: "amazon",
-      name: "Amazon",
-      logo: "📦",
-      description: "E-commerce & AWS",
+      id: "4",
+      name: "Kodomo",
+      image: "/companies/company4.png",
     },
   ]
 
@@ -48,40 +46,42 @@ export function Step1({ selectedCompany, onSelect }: Step1Props) {
           <Card
             key={company.id}
             className={cn(
-              "cursor-pointer transition-all duration-200 hover:shadow-lg",
-              selectedCompany === company.id ? "ring-2 ring-primary bg-primary/5" : "hover:bg-muted/50",
+              "relative cursor-pointer overflow-auto transition-all duration-300 hover:shadow-xl group p-0",
+              selectedCompany === company.id ? "ring-2 ring-blue-500 shadow-lg shadow-blue-500/25" : "hover:shadow-lg",
             )}
             onClick={() => onSelect(company.id)}
           >
-            <CardContent className="p-6 text-center space-y-4">
-              <div className="text-6xl">{company.logo}</div>
-              <div>
-                <h3 className="text-xl font-semibold">{company.name}</h3>
-                <p className="text-sm text-muted-foreground">{company.description}</p>
+            <CardContent className="p-0">
+              <div className="relative bg-gradient-to-br dark:from-gray-900 dark:to-black from-gray-100 to-white">
+                <div className="aspect-square flex items-center justify-center p-8">
+                  <div
+                    className={cn(
+                      "relative transition-all duration-300",
+                      {"group-hover:drop-shadow-[0_0_15px_rgba(59,130,246,0.4)]": selectedCompany !== company.id}
+                    )}
+                  >
+                    <Image
+                      height={100}
+                      width={100}
+                      src={company.image || "/placeholder.svg"}
+                      alt={company.name}
+                      className="w-full h-full object-contain filter brightness-110"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="p-4 bg-white dark:bg-gray-800">
+                <h3 className="text-lg font-semibold text-center text-gray-900 dark:text-white">{company.name}</h3>
               </div>
               {selectedCompany === company.id && (
-                <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center mx-auto">
-                  <svg className="w-4 h-4 text-primary-foreground" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
+                <div className="z-100 absolute top-2 right-2 size-8 bg-blue-500 rounded-full p-2 flex items-center justify-center text-white">
+                  <Check />
                 </div>
               )}
             </CardContent>
           </Card>
         ))}
       </div>
-
-      {selectedCompany && (
-        <div className="text-center p-4 bg-green-50 dark:bg-green-950 rounded-lg border border-green-200 dark:border-green-800">
-          <p className="text-green-800 dark:text-green-200">
-            ✓ {companies.find((c) => c.id === selectedCompany)?.name} selected for analysis
-          </p>
-        </div>
-      )}
     </div>
   )
 }

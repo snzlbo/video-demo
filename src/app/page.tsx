@@ -23,8 +23,7 @@ export default function Home() {
   const nextStep = async () => {
     if (currentStep < totalSteps) {
       setIsLoading(true)
-      // 3 second loading delay
-      await new Promise((resolve) => setTimeout(resolve, 3000))
+      await new Promise((resolve) => setTimeout(resolve, 1500))
       setCurrentStep(currentStep + 1)
       setIsLoading(false)
     }
@@ -65,21 +64,6 @@ export default function Home() {
     }
   }
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-background">
-        <Header />
-        <div className="flex items-center justify-center min-h-[calc(100vh-80px)]">
-          <div className="text-center space-y-4">
-            <Loader2 className="w-12 h-12 animate-spin mx-auto text-primary" />
-            <h2 className="text-2xl font-semibold">Loading Step {currentStep}...</h2>
-            <p className="text-muted-foreground">Please wait while we prepare your content</p>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -103,9 +87,9 @@ export default function Home() {
 
             <Button
               onClick={nextStep}
-              disabled={currentStep === totalSteps || isNextDisabled()}
               className="flex items-center gap-2"
             >
+             {isLoading ? <Loader2 className="w-12 h-12 animate-spin mx-auto " /> : null}
               Next
               <ChevronRight className="w-4 h-4" />
             </Button>
