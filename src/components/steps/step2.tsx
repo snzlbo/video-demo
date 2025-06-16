@@ -138,10 +138,8 @@ export function Step2({ onSelect, selectedWord }: Step2Props) {
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h2 className="text-3xl font-bold mb-2">Word Cloud Analysis</h2>
-        <p className="text-muted-foreground">
-          Click on a word to select it for analysis
-        </p>
+        <h2 className="text-3xl font-bold mb-2">ワードクラウド分析</h2>
+        <p className="text-muted-foreground">分析対象のキーワードを選択</p>
       </div>
 
       <Card>
@@ -175,8 +173,7 @@ export function Step2({ onSelect, selectedWord }: Step2Props) {
       {selectedWord && (
         <div className="text-center p-4 bg-blue-50 dark:bg-blue-950 rounded-lg border border-blue-200 dark:border-blue-800">
           <p className="text-blue-800 dark:text-blue-200">
-            ✓ Selected word: <strong>{selectedWord}</strong> for detailed
-            analysis
+            ✓ 選択中のキーワード： <strong>{selectedWord}</strong>
           </p>
         </div>
       )}
@@ -185,23 +182,19 @@ export function Step2({ onSelect, selectedWord }: Step2Props) {
         <Card className="p-4">
           <div className="text-center">
             <div className="text-2xl font-bold text-primary">15</div>
-            <div className="text-sm text-muted-foreground">Total Keywords</div>
+            <div className="text-sm text-muted-foreground">キーワード合計</div>
           </div>
         </Card>
         <Card className="p-4">
           <div className="text-center">
-            <div className="text-2xl font-bold text-green-600">64</div>
-            <div className="text-sm text-muted-foreground">
-              Highest Frequency
-            </div>
+            <div className="text-2xl font-bold text-green-600">640</div>
+            <div className="text-sm text-muted-foreground">最高出現頻度</div>
           </div>
         </Card>
         <Card className="p-4">
           <div className="text-center">
             <div className="text-2xl font-bold text-orange-600">12</div>
-            <div className="text-sm text-muted-foreground">
-              Lowest Frequency
-            </div>
+            <div className="text-sm text-muted-foreground">最低出現頻度</div>
           </div>
         </Card>
       </div>

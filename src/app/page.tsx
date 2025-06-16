@@ -103,7 +103,7 @@ export default function Home() {
               className="flex items-center gap-2"
             >
               <ChevronLeft className="w-4 h-4" />
-              Previous
+              前へ
             </Button>
 
             <Button
@@ -114,7 +114,7 @@ export default function Home() {
               {isLoading ? (
                 <Loader2 className="w-12 h-12 animate-spin mx-auto " />
               ) : null}
-              Next
+              次へ
               <ChevronRight className="w-4 h-4" />
             </Button>
           </div>

@@ -1,20 +1,20 @@
-"use client"
+"use client";
 
-import { useEffect, useMemo, useRef } from "react"
-import * as echarts from "echarts"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { useTheme } from "next-themes"
+import { useEffect, useMemo, useRef } from "react";
+import * as echarts from "echarts";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useTheme } from "next-themes";
 
 export function Step4() {
-  const { theme } = useTheme()
-  const isDark = useMemo(() => theme === "dark", [theme])
-  const chartRef = useRef<HTMLDivElement>(null)
+  const { theme } = useTheme();
+  const isDark = useMemo(() => theme === "dark", [theme]);
+  const chartRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!chartRef.current || !theme) return
-    echarts.dispose(chartRef.current)
+    if (!chartRef.current || !theme) return;
+    echarts.dispose(chartRef.current);
 
-    const chart = echarts.init(chartRef.current)
+    const chart = echarts.init(chartRef.current);
 
     // Data with some negative values
     const data = [
@@ -37,11 +37,11 @@ export function Step4() {
       { name: "環境・倫理面​", value: -50 },
       { name: "使用方法・利便性​", value: 75 },
       { name: "ギフト・贈答用​", value: 20 },
-    ]
+    ];
 
     const option = {
       title: {
-        text: "Comprehensive Performance Analysis",
+        text: "ポジティブ・ネガティブ分析",
         left: "center",
         textStyle: {
           color: "#333",
@@ -55,9 +55,9 @@ export function Step4() {
           type: "shadow",
         },
         formatter: (params: { name: string; value: number }[]) => {
-          const value = params[0].value
-          const name = params[0].name
-          return `${name}: ${value > 0 ? "+" : ""}${value}%`
+          const value = params[0].value;
+          const name = params[0].name;
+          return `${name}: ${value > 0 ? "+" : ""}${value}%`;
         },
       },
       grid: {
@@ -100,8 +100,7 @@ export function Step4() {
         },
         axisLine: {
           show: false,
-          lineStyle: {
-          },
+          lineStyle: {},
         },
       },
       series: [
@@ -139,62 +138,88 @@ export function Step4() {
       ],
       animationDuration: 2000,
       easing: "cubicOut",
-    }
+    };
 
-    chart.setOption(option)
+    chart.setOption(option);
 
     const handleResize = () => {
-      chart.resize()
-    }
+      chart.resize();
+    };
 
-    window.addEventListener("resize", handleResize)
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener("resize", handleResize)
-      chart.dispose()
-    }
-  }, [isDark, theme])
+      window.removeEventListener("resize", handleResize);
+      chart.dispose();
+    };
+  }, [isDark, theme]);
 
   // Calculate summary metrics
-  const positiveCount = 14
-  const negativeCount = 5
-  const averageScore = 65.8
-  const highestScore = 95
+  const positiveCount = 14;
+  const negativeCount = 5;
+  const averageScore = 65.8;
+  // const highestScore = 95;
 
   const summaryMetrics = [
-    { label: "Positive Metrics", value: positiveCount, change: "74%", color: "text-blue-600" },
-    { label: "Negative Metrics", value: negativeCount, change: "26%", color: "text-red-600" },
-    { label: "Average Score", value: `${averageScore}%`, change: "+3.2%", color: "text-purple-600" },
-    { label: "Best Performance", value: `${highestScore}%`, change: "Innovation", color: "text-green-600" },
-  ]
+    {
+      label: "ポジティブ指標",
+      value: positiveCount,
+      change: "74%",
+      color: "text-blue-600",
+    },
+    {
+      label: "ネガティブ指標",
+      value: negativeCount,
+      change: "26%",
+      color: "text-red-600",
+    },
+    {
+      label: "平均スコア",
+      value: `${averageScore}%`,
+      change: "+3.2%",
+      color: "text-purple-600",
+    },
+    // {
+    //   label: "Best Performance",
+    //   value: `${highestScore}%`,
+    //   change: "Innovation",
+    //   color: "text-green-600",
+    // },
+  ];
 
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h2 className="text-3xl font-bold mb-2">Analysis Results</h2>
-        <p className="text-white">Comprehensive performance metrics across 19 key indicators</p>
+        <h2 className="text-3xl font-bold mb-2">分析結果</h2>
+        <p className="text-white">
+          Comprehensive performance metrics across 19 key indicators
+        </p>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Performance Metrics Overview</CardTitle>
+          <CardTitle>オーバービュー</CardTitle>
         </CardHeader>
         <CardContent>
           <div ref={chartRef} className="w-full h-[600px]" />
         </CardContent>
       </Card>
 
-      <div className="grid md:grid-cols-4 gap-4">
+      <div className="grid md:grid-cols-3 gap-4">
         {summaryMetrics.map((metric, index) => (
           <Card key={index}>
             <CardContent className="p-6 text-center">
               <div className="text-2xl font-bold mb-2">{metric.value}</div>
-              <div className="text-sm text-muted-foreground mb-1">{metric.label}</div>
-              <div className={`text-sm font-medium ${metric.color}`}>{metric.change}</div>
+              <div className="text-sm text-muted-foreground mb-1">
+                {metric.label}
+              </div>
+              <div className={`text-sm font-medium ${metric.color}`}>
+                {metric.change}
+              </div>
             </CardContent>
           </Card>
         ))}
       </div>
     </div>
-  )
+  );
 }
