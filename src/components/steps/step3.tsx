@@ -14,7 +14,7 @@ export function Step3({ selectedVideo, onSelect }: Step3Props) {
   const videoReviews = [
     {
       id: "video1",
-      author: "Tech Reviewer Pro",
+      author: "Amanda",
       rating: 4.8,
       description:
         "🧴🌸 使いやすくてすぐに吸収される！赤ちゃんの肌にとてもやさしく、乾燥しやすい冬でもしっとりと保湿してくれるので助かっています😊✨。優しい香りが一日中残って、パッケージもかわいくて持ち運びに便利🎒。乾燥肌や敏感肌の赤ちゃんにもぴったりで、もう手放せません！💖",
@@ -28,14 +28,14 @@ export function Step3({ selectedVideo, onSelect }: Step3Props) {
     },
     {
       id: "video3",
-      author: "Tech Analysis Hub",
+      author: "Jerry",
       rating: 4.9,
       description:
         "🌿 成分:敏感肌に適した優しい処方 🛡️ 安全性:赤ちゃんの乾燥しやすい肌をやさしく包み込みます 😊 乾燥がひどい時期でもふんわりしっとり！ 🥰 繊細で強すぎない香りにも癒されます。小さなお子様の肌に安心して使えて、これで乾燥知らず✨ 持ち運びもラクチンでママ友にも人気です！おすすめします！",
     },
     {
       id: "video4",
-      author: "Tech Analysis Hub",
+      author: "Susan",
       rating: 4.9,
       description:
         "レシピを選択🥳 :ブルー+ピンク(各1個) 乾燥肌&敏感肌のうちの子でも全くトラブルなし！💓 しっとりと保湿してくれるテクスチャーで、花粉や冷房でゴワゴワしやすい季節も安心。ママの手にも馴染むし、香りも優しくて家族みんなで使えます😊👐これ一本でおむつかぶれも乾燥も防げるので最高です！",
@@ -52,12 +52,18 @@ export function Step3({ selectedVideo, onSelect }: Step3Props) {
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h2 className="text-3xl font-bold mb-2">Video Reviews</h2>
-        <p className="text-muted-foreground">
-          Select a video review to analyze
-        </p>
+        <h2 className="text-3xl font-bold mb-2">Top reviews</h2>
         <div className="flex items-center justify-center space-x-4 mt-4">
           <Button
+            variant={selectedVideo === "positive" ? "default" : "outline"}
+            onClick={() =>
+              onSelect(selectedVideo === "positive" ? "negative" : "positive")
+            }
+            type="button"
+          >
+            センチメント分析
+          </Button>
+          {/* <Button
             variant={selectedVideo === "positive" ? "default" : "outline"}
             onClick={() => onSelect("positive")}
             type="button"
@@ -70,7 +76,7 @@ export function Step3({ selectedVideo, onSelect }: Step3Props) {
             type="button"
           >
             Negative
-          </Button>
+          </Button> */}
         </div>
       </div>
 
